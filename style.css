@@ -30,30 +30,29 @@ body {
 }
 
 .display-wrapper {
-    height: 25%;
+    height: 20%;
     width: 100%;
     background-color: rgb(20, 20, 20);
     color: rgb(20, 179, 207);
-    font-size: 2.5rem;
+    font-size: 2.45rem;
 }
 
 .display {
-    margin-top: 20px;
-    margin-right: 5px;
+    margin-right: 10px;
     text-align: right;
 }
 
 .current-wrapper {
-    height: 15%;
+    height: 20%;
     width: 100%;
     background-color: rgb(20, 20, 20);
     color: rgb(255, 255, 255);
-    font-size: 1.2rem;
+    font-size: 0.9rem;
 }
 
 .current {
-    margin-top: 50px;
-    margin-right: 10px;
+    margin-top: 80px;
+    margin-right: 20px;
     text-align: right;
 }
 
@@ -63,7 +62,7 @@ body {
     grid-template-rows: repeat(5, 1fr);
     flex-grow: 1;
     width: 100%;
-    max-height: 60%;
+    max-height: 70%;
 }
 
 button {
@@ -104,4 +103,8 @@ button:active {
 
 .small {
     font-size: 0.75rem;
+}
+
+.hide {
+    display: none;
 }
