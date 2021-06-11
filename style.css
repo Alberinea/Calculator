@@ -4,7 +4,7 @@ body {
     flex-direction: column;
     height: 100%;
     margin: 0;
-    font-size: 16px;
+    font-size: 32px;
     background-color: rgb(61, 61, 60);
 }
 
@@ -22,23 +22,56 @@ body {
     height: 800px;
     width: 500px;
     max-width: 20vw;
-    background-color: black;
+    background-color: rgb(68, 65, 65);
     align-self: center;
+    border: 10px solid;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .display {
     height: 35%;
     width: 100%;
-    background-color: white;
+    background-color: rgb(36, 35, 35);
 }
 
 .current {
     height: 5%;
     width: 100%;
+    background-color: rgb(0, 0, 0);
 }
 
 .functions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
     flex-grow: 1;
     width: 100%;
-    background-color: gray;
+}
+
+button {
+    font-size: 1rem;
+    color: rgb(20, 179, 207);
+    border-color: black;
+}
+
+button:hover {
+    opacity: 0.60;
+}
+
+button:active {
+    border: 1px solid;
+}
+
+.red {
+    background-color: rgba(214, 68, 129, 0.808);
+    color: white;
+}
+
+.black {
+    background-color: rgb(51, 49, 49);
+}
+
+.small {
+    font-size: 0.75rem;
 }
