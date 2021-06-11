@@ -1,0 +1,44 @@
+html,
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    font-size: 16px;
+    background-color: rgb(61, 61, 60);
+}
+
+.wrapper-top {
+    height: 20vh;
+}
+
+.wrapper-bottom {
+    height: 20vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+    width: 500px;
+    max-width: 20vw;
+    background-color: black;
+    align-self: center;
+}
+
+.display {
+    height: 35%;
+    width: 100%;
+    background-color: white;
+}
+
+.current {
+    height: 5%;
+    width: 100%;
+}
+
+.functions {
+    flex-grow: 1;
+    width: 100%;
+    background-color: gray;
+}
