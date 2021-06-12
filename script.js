@@ -51,7 +51,7 @@ function operate() {
         if (dotExisted) {
             dotUsed = false;
         }
-        let storage = currentLog.innerText.replace('×', '*').replace('÷', '/') + display.innerText;
+        let storage = currentLog.innerText.replace('×', '*').replace('÷', '/').replace('Mod', '%') + '\xa0' + display.innerText;
         let result = eval(storage);
         currentLog.innerText += '\xa0' + display.innerText + ' =';
         display.innerText = result;
@@ -126,6 +126,33 @@ function divide() {
     }
 }
 
+function reminder() {
+    if (currentLog.innerText.includes('Mod')) {
+        operate();
+    }
+    if (!funcInit) {
+        operatorFinished = false;
+        funcInit = true;
+        funcUsing = true;
+        dotUsed = false;
+        currentLog.classList.remove('hide');
+        currentLog.innerText = parseFloat(display.innerText) + ' Mod';
+    } else {
+        currentLog.innerText = currentLog.innerText.slice(0, -2);
+        currentLog.innerText += ' Mod';
+    }
+}
+
+function convertAbs() {
+    if (!operatorFinished) {
+        if (parseFloat(display.innerText) > 0) {
+            display.innerText = -Math.abs(parseFloat(display.innerText));
+        } else {
+            display.innerText = Math.abs(parseFloat(display.innerText));
+        }
+    }
+}
+
 function clear() {
     currentLog.innerText = '';
     display.innerText = '0';
@@ -135,16 +162,16 @@ function clear() {
 }
 
 function del() {
-    if (parseInt(display.innerText) < 10 && !display.innerText.includes('.')) {
-        display.innerText = '00';
-    }
     if (!operatorFinished) {
+        if (parseInt(display.innerText) < 10 && !display.innerText.includes('.')) {
+            display.innerText = '00';
+        }
+        if (!dotExisted) {
+            dotUsed = false;
+        }
         display.innerText = display.innerText.slice(0, -1);
     } else if (operatorFinished) {
-        currentLog.innerText = ''
-    }
-    if (!dotExisted) {
-        dotUsed = false;
+        currentLog.innerText = '';
     }
 }
 
@@ -165,8 +192,11 @@ addButton.addEventListener('click', add);
 subtractButton.addEventListener('click', subtract);
 multiplyButton.addEventListener('click', multiply);
 divideButton.addEventListener('click', divide);
+reminderButton.addEventListener('click', reminder);
+plusminusButton.addEventListener('click', convertAbs);
 operateButton.addEventListener('click', operate);
 clearButton.addEventListener('click', clear);
 deleteButton.addEventListener('click', del);
 dotButton.addEventListener('click', dot);
 
+console.log(eval('5 -- 5'));
