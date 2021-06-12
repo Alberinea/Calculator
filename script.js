@@ -13,7 +13,6 @@ const reminderButton = document.getElementById('reminder');
 const dotButton = document.getElementById('dot');
 let funcInit = false;
 let funcUsing = false;
-let delInitFlag = false; //prevent bug with del button on startup
 let operatorFinished = false;
 let dotUsed = false;
 let dotExisted = display.innerText.includes('.');
@@ -34,6 +33,7 @@ function printNum() {
     }
     if (operatorFinished) {
         operatorFinished = false;
+        dotUsed = false;
         currentLog.classList.add('hide');
         currentLog.innerText = '';
         display.innerText = '';
@@ -47,7 +47,6 @@ function printNum() {
 function operate() {
     if (funcInit && !operatorFinished) {
         funcInit = false;
-        delInitFlag = true;
         operatorFinished = true;
         if (dotExisted) {
             dotUsed = false;
@@ -61,16 +60,15 @@ function operate() {
 
 function add() {
     if (currentLog.innerText.includes('+')) {
-        operate()
+        operate();
     }
     if (!funcInit) {
         operatorFinished = false;
         funcInit = true;
         funcUsing = true;
-        delInitFlag = true;
         dotUsed = false;
         currentLog.classList.remove('hide');
-        currentLog.innerText = display.innerText + ' +\xa0';
+        currentLog.innerText = parseFloat(display.innerText) + ' +\xa0';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
         currentLog.innerText += ' +\xa0';
@@ -82,7 +80,6 @@ function subtract() {
         operatorFinished = false;
         funcInit = true;
         funcUsing = true;
-        delInitFlag = true;
         dotUsed = false;
         currentLog.classList.remove('hide');
         currentLog.innerText = display.innerText - ' +\xa0';
@@ -95,7 +92,6 @@ function subtract() {
 function multiply() {
     if (!funcInit) {
         funcInit = true;
-        delInitFlag = true;
         currentLog.classList.remove('hide');
         currentLog.innerText += ' ×\xa0';
         display.innerText = '';
@@ -105,7 +101,6 @@ function multiply() {
 function divide() {
     if (!funcInit) {
         funcInit = true;
-        delInitFlag = true;
         currentLog.classList.remove('hide');
         currentLog.innerText += ' ÷\xa0';
         display.innerText = '';
@@ -121,31 +116,28 @@ function clear() {
 }
 
 function del() {
-    funcUsing = true;
-    if (!dotExisted) {
-        dotUsed = false;
-    }
-    if (parseInt(display.innerText) < 10 && dotExisted) {
+    if (parseInt(display.innerText) < 10 && !display.innerText.includes('.')) {
         display.innerText = '00';
     }
-    if (!funcInit && !delInitFlag) {
+    if (!operatorFinished) {
         display.innerText = display.innerText.slice(0, -1);
-        currentLog.innerText = currentLog.innerText.slice(0, -1);
-    } else if (funcUsing) {
-        display.innerText = display.innerText.slice(0, -1);
-    } else if (!funcInit) {
-        currentLog.innerText = '';
-        currentLog.classList.add('hide');
+    } else if (operatorFinished) {
+        currentLog.innerText = ''
+    }
+    if (!dotExisted) {
+        dotUsed = false;
     }
 }
 
 function dot() {
+    if (operatorFinished) {
+        dotUsed = true;
+    }
     if (dotExisted) {
         dotUsed = true;
     } else if (!dotUsed && !funcUsing) {
-        dotUsed = true;
         display.innerText += '.';
-        operatorFinished = false;
+        dotUsed = true;
     }
 }
 
@@ -158,3 +150,4 @@ operateButton.addEventListener('click', operate);
 clearButton.addEventListener('click', clear);
 deleteButton.addEventListener('click', del);
 dotButton.addEventListener('click', dot);
+
