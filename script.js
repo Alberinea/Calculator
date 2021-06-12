@@ -53,7 +53,7 @@ function operate() {
         }
         let storage = currentLog.innerText.replace('×', '*').replace('÷', '/') + display.innerText;
         let result = eval(storage);
-        currentLog.innerText += display.innerText + ' =';
+        currentLog.innerText += '\xa0' + display.innerText + ' =';
         display.innerText = result;
     }
 }
@@ -68,42 +68,61 @@ function add() {
         funcUsing = true;
         dotUsed = false;
         currentLog.classList.remove('hide');
-        currentLog.innerText = parseFloat(display.innerText) + ' +\xa0';
+        currentLog.innerText = parseFloat(display.innerText) + ' +';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
-        currentLog.innerText += ' +\xa0';
+        currentLog.innerText += ' +';
     }
 }
 
 function subtract() {
+    if (currentLog.innerText.includes('-')) {
+        operate();
+    }
     if (!funcInit) {
         operatorFinished = false;
         funcInit = true;
         funcUsing = true;
         dotUsed = false;
         currentLog.classList.remove('hide');
-        currentLog.innerText = display.innerText - ' +\xa0';
+        currentLog.innerText = parseFloat(display.innerText) + ' -';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
-        currentLog.innerText += ' -\xa0';
+        currentLog.innerText += ' -';
     }
 }
 
 function multiply() {
+    if (currentLog.innerText.includes('×')) {
+        operate();
+    }
     if (!funcInit) {
+        operatorFinished = false;
         funcInit = true;
+        funcUsing = true;
+        dotUsed = false;
         currentLog.classList.remove('hide');
-        currentLog.innerText += ' ×\xa0';
-        display.innerText = '';
+        currentLog.innerText = parseFloat(display.innerText) + ' ×';
+    } else {
+        currentLog.innerText = currentLog.innerText.slice(0, -2);
+        currentLog.innerText += ' ×';
     }
 }
 
 function divide() {
+    if (currentLog.innerText.includes('÷')) {
+        operate();
+    }
     if (!funcInit) {
+        operatorFinished = false;
         funcInit = true;
+        funcUsing = true;
+        dotUsed = false;
         currentLog.classList.remove('hide');
-        currentLog.innerText += ' ÷\xa0';
-        display.innerText = '';
+        currentLog.innerText = parseFloat(display.innerText) + ' ÷';
+    } else {
+        currentLog.innerText = currentLog.innerText.slice(0, -2);
+        currentLog.innerText += ' ÷';
     }
 }
 
