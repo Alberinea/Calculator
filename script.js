@@ -1,51 +1,75 @@
 const buttons = document.querySelectorAll('.num');
-const computing = document.querySelector('.current');
+const currentLog = document.querySelector('.current');
 const display = document.querySelector('.display');
-const addButton = document.querySelector('#add');
-const subtractButton = document.querySelector('#subtract');
-const multiplyButton = document.querySelector('#multiply');
-const divideButton = document.querySelector('#divide');
-const operateButton = document.querySelector('#operate');
-const clearButton = document.querySelector('#clear');
-const deleteButton = document.querySelector('#delete');
-const plusminusButton = document.querySelector('#plusminus');
-const reminderButton = document.querySelector('#reminder');
+const addButton = document.getElementById('add');
+const subtractButton = document.getElementById('subtract');
+const multiplyButton = document.getElementById('multiply');
+const divideButton = document.getElementById('divide');
+const operateButton = document.getElementById('operate');
+const clearButton = document.getElementById('clear');
+const deleteButton = document.getElementById('delete');
+const plusminusButton = document.getElementById('plusminus');
+const reminderButton = document.getElementById('reminder');
 let funcOn = false;
-let started = false;
-let delDisplayResultScreen = false
+let funcUsing = false;
+let delInitFlag = false; //prevent bug with del button on startup
+let secondUsed = false;
+let operatorFinished = false;
 
 function printNum() {
     let num = this.innerText;
     let displayScreen = display.innerText.replace(/^0+/, '');
-    let currentScreen = computing.innerText.replace(/^0+/, '');
+    let currentScreen = currentLog.innerText.replace(/^0+/, '');
     display.innerText = displayScreen;
-    computing.innerText = currentScreen;
+    currentLog.innerText = currentScreen;
     display.innerText += num;
     if (!funcOn) {
-        computing.innerText += num;
+        currentLog.innerText += num;
     }
-    if (delDisplayResultScreen) {
-        display.innerText = num
-        delDisplayResultScreen = false
+    if (funcUsing) {
+        display.innerText = num;
+        funcUsing = false;
+    }
+    if (operatorFinished) {
+        operatorFinished = false;
+        currentLog.classList.add('hide');
+        currentLog.innerText = '';
+        display.innerText = '';
+        display.innerText += num;
     }
 }
 
 function add() {
-    if (!funcOn) {
+    if (!funcOn && !secondUsed) {
         funcOn = true;
-        started = true
-        computing.classList.remove('hide');
-        computing.innerText += ' +\xa0';
-        display.innerText = '';
+        funcUsing = true;
+        delInitFlag = true;
+        secondUsed = true;
+        currentLog.classList.remove('hide');
+        currentLog.innerText += ' +\xa0';
+    } else if (!funcOn && secondUsed) {
+        operatorFinished = false;
+        funcOn = true;
+        funcUsing = true;
+        delInitFlag = true;
+        currentLog.classList.remove('hide');
+        currentLog.innerText = display.innerText + ' +\xa0';
     }
 }
 
 function subtract() {
-    if (!funcOn) {
+    if (!funcOn && !secondUsed) {
         funcOn = true;
-        started = true;
-        computing.classList.remove('hide');
-        computing.innerText += ' -\xa0';
+        delInitFlag = true;
+        secondUsed = true;
+        currentLog.classList.remove('hide');
+        currentLog.innerText += ' -\xa0';
+        display.innerText = '';
+    } else if (!funcOn && secondUsed) {
+        funcOn = true;
+        delInitFlag = true;
+        currentLog.classList.remove('hide');
+        currentLog.innerText = display.innerText + ' -\xa0';
         display.innerText = '';
     }
 }
@@ -53,9 +77,9 @@ function subtract() {
 function multiply() {
     if (!funcOn) {
         funcOn = true;
-        started = true;
-        computing.classList.remove('hide');
-        computing.innerText += ' ×\xa0';
+        delInitFlag = true;
+        currentLog.classList.remove('hide');
+        currentLog.innerText += ' ×\xa0';
         display.innerText = '';
     }
 }
@@ -63,42 +87,43 @@ function multiply() {
 function divide() {
     if (!funcOn) {
         funcOn = true;
-        started = true;
-        computing.classList.remove('hide');
-        computing.innerText += ' ÷\xa0';
+        delInitFlag = true;
+        currentLog.classList.remove('hide');
+        currentLog.innerText += ' ÷\xa0';
         display.innerText = '';
     }
 }
 
 function operate() {
-    if (funcOn) {
+    if (funcOn && !operatorFinished) {
         funcOn = false;
-        started = true;
-        let storage = computing.innerText.replace('×', '*').replace('÷', '/') + display.innerText;
+        delInitFlag = true;
+        operatorFinished = true;
+        let storage = currentLog.innerText.replace('×', '*').replace('÷', '/') + display.innerText;
         let result = eval(storage);
-        computing.innerText += display.innerText + ' =';
+        currentLog.innerText += display.innerText + ' =';
         display.innerText = result;
     }
 }
 
 function clear() {
-    computing.innerText = '';
+    currentLog.innerText = '';
     display.innerText = '0';
-    computing.classList.add('hide');
+    currentLog.classList.add('hide');
     funcOn = false;
 }
 
 function del() {
-    if (!funcOn) {
-        computing.innerText = '';
-        computing.classList.add('hide');
-        delDisplayResultScreen = true
-    } 
-    if ((!funcOn) && (!started)) {
+    funcUsing = true;
+    if (!funcOn && !delInitFlag) {
         display.innerText = display.innerText.slice(0, -1);
-        computing.innerText = computing.innerText.slice(0, -1);
+        currentLog.innerText = currentLog.innerText.slice(0, -1);
+    } else if (funcUsing) {
+        display.innerText = display.innerText.slice(0, -1);
+    } else if (!funcOn) {
+        currentLog.innerText = '';
+        currentLog.classList.add('hide');
     }
-
 }
 
 buttons.forEach((button) => button.addEventListener('click', printNum));

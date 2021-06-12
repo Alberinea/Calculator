@@ -6,14 +6,7 @@ body {
     margin: 0;
     font-size: 32px;
     background-color: rgb(61, 61, 60);
-}
-
-.wrapper-top {
-    height: 20vh;
-}
-
-.wrapper-bottom {
-    height: 20vh;
+    justify-content: center;
 }
 
 .container {
@@ -21,7 +14,7 @@ body {
     flex-direction: column;
     height: 800px;
     width: 500px;
-    max-width: 20vw;
+    max-width: 600px;
     background-color: rgb(68, 65, 65);
     align-self: center;
     border: 10px solid;
