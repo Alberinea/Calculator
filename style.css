@@ -12,8 +12,8 @@ body {
 .container {
     display: flex;
     flex-direction: column;
-    height: 800px;
-    width: 500px;
+    height: 700px;
+    width: 420px;
     max-width: 600px;
     background-color: rgb(68, 65, 65);
     align-self: center;
