@@ -25,6 +25,7 @@ function printNum() {
     display.innerText = displayScreen;
     currentLog.innerText = currentScreen;
     display.innerText += num;
+    display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toLocaleString();
     if (!funcInit) currentLog.innerText += num;
     if (funcUsing) {
         display.innerText = num;
@@ -48,20 +49,23 @@ function operate() {
     if (funcInit && !operatorFinished) {
         funcInit = false;
         operatorFinished = true;
+        let storage = parseFloat(display.innerText.replace(/,/g, ''));
         if (dotExisted) {
             dotUsed = false;
         }
-        currentLog.innerText += '\xa0' + display.innerText + ' =';
+        currentLog.innerText += '\xa0' + storage + ' =';
         if (currentLog.innerText.includes('+'))
-            display.innerText = parseFloat(currentLog.innerText) + parseFloat(display.innerText);
+            display.innerText = parseFloat(currentLog.innerText) + storage;
         if (currentLog.innerText.includes('-'))
-            display.innerText = parseFloat(currentLog.innerText) - parseFloat(display.innerText);
+            display.innerText = parseFloat(currentLog.innerText) - storage;
         if (currentLog.innerText.includes('×'))
-            display.innerText = parseFloat(currentLog.innerText) * parseFloat(display.innerText);
+            display.innerText = parseFloat(currentLog.innerText) * storage;
         if (currentLog.innerText.includes('÷'))
-            display.innerText = parseFloat(currentLog.innerText) / parseFloat(display.innerText);
+            display.innerText = parseFloat(currentLog.innerText) / storage;
         if (currentLog.innerText.includes('Mod'))
-            display.innerText = parseFloat(currentLog.innerText) % parseFloat(display.innerText);
+            display.innerText = parseFloat(currentLog.innerText) % storage;
+        if (isNaN(display.innerText)) display.innerText = undefined;
+        if (display.innerText.includes('.')) display.innerText = parseFloat(display.innerText).toFixed(3)
     }
 }
 
@@ -77,7 +81,7 @@ function add() {
         funcUsing = true;
         dotUsed = false;
         currentLog.classList.remove('hide');
-        currentLog.innerText = parseFloat(display.innerText) + ' +';
+        currentLog.innerText = parseFloat(display.innerText.replace(/,/g, '')) + ' +';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
         currentLog.innerText += ' +';
@@ -227,6 +231,11 @@ function addKeyboard(e) {
         keyboard.classList.add('numActive');
         setTimeout(() => keyboard.classList.remove('numActive'), 100);
         divide();
+    }
+    if (keyboard.innerText === 'mod') {
+        keyboard.classList.add('numActive');
+        setTimeout(() => keyboard.classList.remove('numActive'), 100);
+        reminder();
     }
     if (keyboard.innerText === '+/-') {
         keyboard.classList.add('numActive');
