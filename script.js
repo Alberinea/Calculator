@@ -182,17 +182,55 @@ function addKeyboard(e) {
     if (!keyboard) return;
     if (parseInt(keyboard.innerText) < 10) {
         this.innerText = keyboard.innerText;
+        keyboard.classList.add('numActive');
+        setTimeout(() => keyboard.classList.remove('numActive'), 100);
         printNum();
     }
-    if (keyboard.innerText === '+') add();
-    if (keyboard.innerText === '−') subtract();
-    if (keyboard.innerText === '×') multiply();
-    if (keyboard.innerText === '÷') divide();
-    if (keyboard.innerText === '+/-') convertAbs();
-    if (keyboard.innerText === '=') operate();
-    if (keyboard.innerText === 'C') clear();
-    if (keyboard.innerText === 'DEL') del();
-    if (keyboard.innerText === '.') dot();
+    if (keyboard.innerText === '+') {
+        keyboard.classList.add('numActive');
+        setTimeout(() => keyboard.classList.remove('numActive'), 100);
+        add();
+    }
+    if (keyboard.innerText === '−') {
+        keyboard.classList.add('numActive');
+        setTimeout(() => keyboard.classList.remove('numActive'), 100);
+        subtract();
+    }
+    if (keyboard.innerText === '×') {
+        keyboard.classList.add('numActive');
+        setTimeout(() => keyboard.classList.remove('numActive'), 100);
+        multiply();
+    }
+    if (keyboard.innerText === '÷') {
+        keyboard.classList.add('numActive');
+        setTimeout(() => keyboard.classList.remove('numActive'), 100);
+        divide();
+    }
+    if (keyboard.innerText === '+/-') {
+        keyboard.classList.add('numActive');
+        setTimeout(() => keyboard.classList.remove('numActive'), 100);
+        convertAbs();
+    }
+    if (keyboard.innerText === '=') {
+        keyboard.classList.add('calActive');
+        setTimeout(() => keyboard.classList.remove('calActive'), 100);
+        operate();
+    }
+    if (keyboard.innerText === 'C') {
+        keyboard.classList.add('delActive');
+        setTimeout(() => keyboard.classList.remove('delActive'), 100);
+        clear();
+    }
+    if (keyboard.innerText === 'DEL') {
+        keyboard.classList.add('delActive');
+        setTimeout(() => keyboard.classList.remove('delActive'), 100);
+        del();
+    }
+    if (keyboard.innerText === '.') {
+        keyboard.classList.add('numActive');
+        setTimeout(() => keyboard.classList.remove('numActive'), 100);
+        dot();
+    }
 }
 
 buttons.forEach((button) => button.addEventListener('click', printNum));

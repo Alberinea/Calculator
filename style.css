@@ -64,10 +64,6 @@ button {
     border-color: black;
 }
 
-button:active {
-    border: 1px solid;
-}
-
 .red {
     background-color: rgba(214, 68, 129, 0.808);
     color: white;
@@ -100,4 +96,16 @@ button:active {
 
 .hide {
     display: none;
+}
+
+.numActive {
+    background-color: rgb(83, 81, 81);
+}
+
+.calActive {
+    background-color: rgb(155, 118, 49);
+}
+
+.delActive {
+    background-color: rgba(148, 56, 94, 0.808);
 }
