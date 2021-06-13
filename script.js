@@ -16,32 +16,38 @@ let funcUsing = false;
 let operatorFinished = false;
 let dotUsed = false;
 let allowOperate = false;
+let pause = false;
 let dotExisted = display.innerText.includes('.');
 
 function printNum() {
-    let num = this.innerText;
-    let displayScreen = display.innerText.replace(/^0/, '');
-    let currentScreen = currentLog.innerText.replace(/^00/, '');
-    display.innerText = displayScreen;
-    currentLog.innerText = currentScreen;
-    display.innerText += num;
-    display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toLocaleString();
-    if (!funcInit) currentLog.innerText += num;
-    if (funcUsing) {
-        display.innerText = num;
-        funcUsing = false;
-        allowOperate = true;
-    }
-    if (operatorFinished) {
-        operatorFinished = false;
-        dotUsed = false;
-        currentLog.classList.add('hide');
-        currentLog.innerText = '';
-        display.innerText = '';
+    if (!pause) {
+        let num = this.innerText;
         display.innerText += num;
-    }
-    if (display.innerText == '00') {
-        display.innerText = '0';
+        display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 14,
+        });
+        if (!funcInit) currentLog.innerText += num;
+        if (funcUsing) {
+            display.innerText = num;
+            funcUsing = false;
+            allowOperate = true;
+        }
+        if (operatorFinished) {
+            operatorFinished = false;
+            dotUsed = false;
+            currentLog.classList.add('hide');
+            currentLog.innerText = '';
+            display.innerText = '';
+            display.innerText += num;
+        }
+        if (display.innerText == '00') {
+            display.innerText = '0';
+        }
+        if (display.innerText.length < 12) display.style.cssText = 'font-size: 1.95rem;';
+        if (display.innerText.length > 13 && display.innerText.length < 16) display.style.cssText = 'font-size: 1.5rem';
+        if (display.innerText.length > 17) display.style.cssText = 'font-size: 1.3rem';
+        if (display.innerText.length > 18) pause = true;
     }
 }
 
@@ -49,6 +55,7 @@ function operate() {
     if (funcInit && !operatorFinished) {
         funcInit = false;
         operatorFinished = true;
+        pause = false;
         let storage = parseFloat(display.innerText.replace(/,/g, ''));
         if (dotExisted) {
             dotUsed = false;
@@ -56,7 +63,7 @@ function operate() {
         currentLog.innerText += '\xa0' + storage + ' =';
         if (currentLog.innerText.includes('+')) {
             let result = parseFloat(currentLog.innerText) + storage;
-            display.innerText = result.toLocaleString()
+            display.innerText = result.toLocaleString();
         }
         if (currentLog.innerText.includes('−')) {
             let result = parseFloat(currentLog.innerText) - storage;
@@ -69,17 +76,21 @@ function operate() {
         if (currentLog.innerText.includes('÷')) {
             let result = parseFloat(currentLog.innerText) / storage;
             display.innerText = result.toLocaleString();
-            if (isNaN(display.innerText)) display.innerText = undefined
         }
         if (currentLog.innerText.includes('Mod')) {
             let result = parseFloat(currentLog.innerText) % storage;
             display.innerText = result.toLocaleString();
         }
-        if (parseFloat(display.innerText) % 1 != 0) display.innerText = parseFloat(display.innerText).toFixed(3)
+        if (parseFloat(display.innerText) % 1 != 0) display.innerText = parseFloat(display.innerText).toFixed(5);
+        if (display.innerText.length > 17)
+            display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toExponential();
+        if (display.innerText.length > 13 && display.innerText.length < 16) display.style.cssText = 'font-size: 1.5rem';
+        if (display.innerText.length > 17) display.style.cssText = 'font-size: 1.3rem';
     }
 }
 
 function add() {
+    pause = false;
     if (allowOperate) {
         allowOperate = false;
         operate();
@@ -99,6 +110,7 @@ function add() {
 }
 
 function subtract() {
+    pause = false;
     if (allowOperate) {
         allowOperate = false;
         operate();
@@ -118,6 +130,7 @@ function subtract() {
 }
 
 function multiply() {
+    pause = false;
     if (allowOperate) {
         allowOperate = false;
         operate();
@@ -137,6 +150,7 @@ function multiply() {
 }
 
 function divide() {
+    pause = false;
     if (allowOperate) {
         allowOperate = false;
         operate();
@@ -156,6 +170,7 @@ function divide() {
 }
 
 function reminder() {
+    pause = false;
     if (allowOperate) {
         allowOperate = false;
         operate();
@@ -187,26 +202,34 @@ function convertAbs() {
 }
 
 function clear() {
+    pause = false;
     currentLog.innerText = '';
     display.innerText = '0';
     currentLog.classList.add('hide');
     funcInit = false;
     dotUsed = false;
+    display.style.cssText = 'font-size: 1.95rem;';
 }
 
 function del() {
+    pause = false;
     if (!operatorFinished) {
         if (parseInt(display.innerText) < 10 && !display.innerText.includes('.')) {
             display.innerText = '00';
         }
         if (!dotExisted) dotUsed = false;
         display.innerText = display.innerText.slice(0, -1);
+        if (display.innerText.length < 12) display.style.cssText = 'font-size: 1.95rem;';
+        if (display.innerText.length > 13 && display.innerText.length < 16) display.style.cssText = 'font-size: 1.5rem';
+        if (display.innerText.length > 17) display.style.cssText = 'font-size: 1.3rem';
     } else if (operatorFinished) {
         currentLog.innerText = '';
     }
 }
 
 function dot() {
+    if (display.innerText == '0') dotUsed = false;
+    if (pause) dotUsed = true;
     if (operatorFinished) dotUsed = true;
     if (dotExisted) dotUsed = true;
     else if (!dotUsed && !funcUsing) {
