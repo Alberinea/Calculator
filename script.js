@@ -19,14 +19,13 @@ let allowOperate = false;
 let pause = false;
 let dotExisted = display.innerText.includes('.');
 
-
 function printNum() {
     if (!pause) {
         let num = this.innerText;
-        let beforeDecimal = display.innerText.split('.')[0]
+        let beforeDecimal = display.innerText.split('.')[0];
         display.innerText += num;
         display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toLocaleString('en-US', {
-            minimumFractionDigits: display.innerText.length - (beforeDecimal.length +1),
+            minimumFractionDigits: display.innerText.length - (beforeDecimal.length + 1),
             maximumFractionDigits: 14,
         });
         if (funcUsing) {
@@ -44,6 +43,7 @@ function printNum() {
         if (display.innerText.length < 12) display.style.cssText = 'font-size: 1.95rem;';
         if (display.innerText.length > 13 && display.innerText.length < 16) display.style.cssText = 'font-size: 1.5rem';
         if (display.innerText.length > 17) display.style.cssText = 'font-size: 1.3rem';
+        if (display.innerText.length > 14 && display.innerText.includes('.')) pause = true;
         if (display.innerText.length > 18) pause = true;
     }
 }
@@ -62,7 +62,7 @@ function operate() {
             let result = parseFloat(currentLog.innerText) + storage;
             display.innerText = result.toLocaleString();
         }
-        if (currentLog.innerText.includes('−')) {
+        if (currentLog.innerText.includes('−')) {   
             let result = parseFloat(currentLog.innerText) - storage;
             display.innerText = result.toLocaleString();
         }
@@ -78,7 +78,9 @@ function operate() {
             let result = parseFloat(currentLog.innerText) % storage;
             display.innerText = result.toLocaleString();
         }
-        if (parseFloat(display.innerText) % 1 != 0) display.innerText = parseFloat(display.innerText).toFixed(5);
+        if (parseFloat(display.innerText) % 1 != 0) display.innerText = parseFloat(display.innerText)
+            .toFixed(4)
+            .replace(/\.0*$|(\.\d*[1-9])0+$/, '$1');
         if (display.innerText.length > 17)
             display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toExponential(6);
         if (display.innerText.length > 13 && display.innerText.length < 16) display.style.cssText = 'font-size: 1.5rem';
@@ -219,7 +221,6 @@ function del() {
 }
 
 function dot() {
-    if (display.innerText.includes('0')) dotUsed = false;
     if (pause) dotUsed = true;
     if (operatorFinished) dotUsed = true;
     if (dotExisted) dotUsed = true;
