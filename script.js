@@ -15,6 +15,7 @@ let funcInit = false;
 let funcUsing = false;
 let operatorFinished = false;
 let dotUsed = false;
+let allowOperate = false;
 let dotExisted = display.innerText.includes('.');
 
 function printNum() {
@@ -28,6 +29,7 @@ function printNum() {
     if (funcUsing) {
         display.innerText = num;
         funcUsing = false;
+        allowOperate = true;
     }
     if (operatorFinished) {
         operatorFinished = false;
@@ -64,6 +66,10 @@ function operate() {
 }
 
 function add() {
+    if (allowOperate) {
+        allowOperate = false;
+        operate();
+    }
     if (currentLog.innerText.includes('+')) operate();
     if (!funcInit) {
         operatorFinished = false;
@@ -79,6 +85,10 @@ function add() {
 }
 
 function subtract() {
+    if (allowOperate) {
+        allowOperate = false;
+        operate();
+    }
     if (currentLog.innerText.includes('-')) operate();
     if (!funcInit) {
         operatorFinished = false;
@@ -94,6 +104,10 @@ function subtract() {
 }
 
 function multiply() {
+    if (allowOperate) {
+        allowOperate = false;
+        operate();
+    }
     if (currentLog.innerText.includes('×')) operate();
     if (!funcInit) {
         operatorFinished = false;
@@ -109,6 +123,10 @@ function multiply() {
 }
 
 function divide() {
+    if (allowOperate) {
+        allowOperate = false;
+        operate();
+    }
     if (currentLog.innerText.includes('÷')) operate();
     if (!funcInit) {
         operatorFinished = false;
@@ -124,6 +142,10 @@ function divide() {
 }
 
 function reminder() {
+    if (allowOperate) {
+        allowOperate = false;
+        operate();
+    }
     if (currentLog.innerText.includes('Mod')) operate();
     if (!funcInit) {
         operatorFinished = false;
