@@ -49,11 +49,17 @@ function operate() {
         if (dotExisted) {
             dotUsed = false;
         }
-        let storage =
-            currentLog.innerText.replace('×', '*').replace('÷', '/').replace('Mod', '%') + '\xa0' + display.innerText;
-        let result = eval(storage);
         currentLog.innerText += '\xa0' + display.innerText + ' =';
-        display.innerText = result;
+        if (currentLog.innerText.includes('+'))
+            display.innerText = parseFloat(currentLog.innerText) + parseFloat(display.innerText);
+        if (currentLog.innerText.includes('-'))
+            display.innerText = parseFloat(currentLog.innerText) - parseFloat(display.innerText);
+        if (currentLog.innerText.includes('×'))
+            display.innerText = parseFloat(currentLog.innerText) * parseFloat(display.innerText);
+        if (currentLog.innerText.includes('÷'))
+            display.innerText = parseFloat(currentLog.innerText) / parseFloat(display.innerText);
+        if (currentLog.innerText.includes('Mod'))
+            display.innerText = parseFloat(currentLog.innerText) % parseFloat(display.innerText);
     }
 }
 
@@ -201,4 +207,3 @@ clearButton.addEventListener('click', clear);
 deleteButton.addEventListener('click', del);
 dotButton.addEventListener('click', dot);
 window.addEventListener('keydown', addKeyboard);
-
