@@ -95,10 +95,6 @@ button {
     font-size: 0.75rem;
 }
 
-.hide {
-    display: none;
-}
-
 .numActive {
     background-color: rgb(83, 81, 81);
 }

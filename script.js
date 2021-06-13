@@ -19,15 +19,16 @@ let allowOperate = false;
 let pause = false;
 let dotExisted = display.innerText.includes('.');
 
+
 function printNum() {
     if (!pause) {
         let num = this.innerText;
+        let beforeDecimal = display.innerText.split('.')[0]
         display.innerText += num;
         display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toLocaleString('en-US', {
-            minimumFractionDigits: 0,
+            minimumFractionDigits: display.innerText.length - (beforeDecimal.length +1),
             maximumFractionDigits: 14,
         });
-        if (!funcInit) currentLog.innerText += num;
         if (funcUsing) {
             display.innerText = num;
             funcUsing = false;
@@ -36,13 +37,9 @@ function printNum() {
         if (operatorFinished) {
             operatorFinished = false;
             dotUsed = false;
-            currentLog.classList.add('hide');
             currentLog.innerText = '';
             display.innerText = '';
             display.innerText += num;
-        }
-        if (display.innerText == '00') {
-            display.innerText = '0';
         }
         if (display.innerText.length < 12) display.style.cssText = 'font-size: 1.95rem;';
         if (display.innerText.length > 13 && display.innerText.length < 16) display.style.cssText = 'font-size: 1.5rem';
@@ -101,7 +98,6 @@ function add() {
         funcInit = true;
         funcUsing = true;
         dotUsed = false;
-        currentLog.classList.remove('hide');
         currentLog.innerText = parseFloat(display.innerText.replace(/,/g, '')) + ' +';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
@@ -121,7 +117,6 @@ function subtract() {
         funcInit = true;
         funcUsing = true;
         dotUsed = false;
-        currentLog.classList.remove('hide');
         currentLog.innerText = parseFloat(display.innerText.replace(/,/g, '')) + ' −';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
@@ -141,7 +136,6 @@ function multiply() {
         funcInit = true;
         funcUsing = true;
         dotUsed = false;
-        currentLog.classList.remove('hide');
         currentLog.innerText = parseFloat(display.innerText.replace(/,/g, '')) + ' ×';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
@@ -161,7 +155,6 @@ function divide() {
         funcInit = true;
         funcUsing = true;
         dotUsed = false;
-        currentLog.classList.remove('hide');
         currentLog.innerText = parseFloat(display.innerText.replace(/,/g, '')) + ' ÷';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
@@ -181,7 +174,6 @@ function reminder() {
         funcInit = true;
         funcUsing = true;
         dotUsed = false;
-        currentLog.classList.remove('hide');
         currentLog.innerText = parseFloat(display.innerText.replace(/,/g, '')) + ' Mod';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
@@ -205,7 +197,6 @@ function clear() {
     pause = false;
     currentLog.innerText = '';
     display.innerText = '0';
-    currentLog.classList.add('hide');
     funcInit = false;
     dotUsed = false;
     display.style.cssText = 'font-size: 1.95rem;';
@@ -215,7 +206,7 @@ function del() {
     pause = false;
     if (!operatorFinished) {
         if (parseInt(display.innerText) < 10 && !display.innerText.includes('.')) {
-            display.innerText = '00';
+            display.innerText = '0';
         }
         if (!dotExisted) dotUsed = false;
         display.innerText = display.innerText.slice(0, -1);
@@ -228,7 +219,7 @@ function del() {
 }
 
 function dot() {
-    if (display.innerText == '0') dotUsed = false;
+    if (display.innerText.includes('0')) dotUsed = false;
     if (pause) dotUsed = true;
     if (operatorFinished) dotUsed = true;
     if (dotExisted) dotUsed = true;
