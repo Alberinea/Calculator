@@ -54,18 +54,28 @@ function operate() {
             dotUsed = false;
         }
         currentLog.innerText += '\xa0' + storage + ' =';
-        if (currentLog.innerText.includes('+'))
-            display.innerText = parseFloat(currentLog.innerText) + storage;
-        if (currentLog.innerText.includes('-'))
-            display.innerText = parseFloat(currentLog.innerText) - storage;
-        if (currentLog.innerText.includes('×'))
-            display.innerText = parseFloat(currentLog.innerText) * storage;
-        if (currentLog.innerText.includes('÷'))
-            display.innerText = parseFloat(currentLog.innerText) / storage;
-        if (currentLog.innerText.includes('Mod'))
-            display.innerText = parseFloat(currentLog.innerText) % storage;
-        if (isNaN(display.innerText)) display.innerText = undefined;
-        if (display.innerText.includes('.')) display.innerText = parseFloat(display.innerText).toFixed(3)
+        if (currentLog.innerText.includes('+')) {
+            let result = parseFloat(currentLog.innerText) + storage;
+            display.innerText = result.toLocaleString()
+        }
+        if (currentLog.innerText.includes('−')) {
+            let result = parseFloat(currentLog.innerText) - storage;
+            display.innerText = result.toLocaleString();
+        }
+        if (currentLog.innerText.includes('×')) {
+            let result = parseFloat(currentLog.innerText) * storage;
+            display.innerText = result.toLocaleString();
+        }
+        if (currentLog.innerText.includes('÷')) {
+            let result = parseFloat(currentLog.innerText) / storage;
+            display.innerText = result.toLocaleString();
+            if (isNaN(display.innerText)) display.innerText = undefined
+        }
+        if (currentLog.innerText.includes('Mod')) {
+            let result = parseFloat(currentLog.innerText) % storage;
+            display.innerText = result.toLocaleString();
+        }
+        if (parseFloat(display.innerText) % 1 != 0) display.innerText = parseFloat(display.innerText).toFixed(3)
     }
 }
 
@@ -93,17 +103,17 @@ function subtract() {
         allowOperate = false;
         operate();
     }
-    if (currentLog.innerText.includes('-')) operate();
+    if (currentLog.innerText.includes('−')) operate();
     if (!funcInit) {
         operatorFinished = false;
         funcInit = true;
         funcUsing = true;
         dotUsed = false;
         currentLog.classList.remove('hide');
-        currentLog.innerText = parseFloat(display.innerText) + ' -';
+        currentLog.innerText = parseFloat(display.innerText.replace(/,/g, '')) + ' −';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
-        currentLog.innerText += ' -';
+        currentLog.innerText += ' −';
     }
 }
 
@@ -119,7 +129,7 @@ function multiply() {
         funcUsing = true;
         dotUsed = false;
         currentLog.classList.remove('hide');
-        currentLog.innerText = parseFloat(display.innerText) + ' ×';
+        currentLog.innerText = parseFloat(display.innerText.replace(/,/g, '')) + ' ×';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
         currentLog.innerText += ' ×';
@@ -138,7 +148,7 @@ function divide() {
         funcUsing = true;
         dotUsed = false;
         currentLog.classList.remove('hide');
-        currentLog.innerText = parseFloat(display.innerText) + ' ÷';
+        currentLog.innerText = parseFloat(display.innerText.replace(/,/g, '')) + ' ÷';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
         currentLog.innerText += ' ÷';
@@ -157,7 +167,7 @@ function reminder() {
         funcUsing = true;
         dotUsed = false;
         currentLog.classList.remove('hide');
-        currentLog.innerText = parseFloat(display.innerText) + ' Mod';
+        currentLog.innerText = parseFloat(display.innerText.replace(/,/g, '')) + ' Mod';
     } else {
         currentLog.innerText = currentLog.innerText.slice(0, -2);
         currentLog.innerText += ' Mod';
@@ -167,9 +177,11 @@ function reminder() {
 function convertAbs() {
     if (!operatorFinished) {
         if (parseFloat(display.innerText) > 0) {
-            display.innerText = -Math.abs(parseFloat(display.innerText));
+            display.innerText = -Math.abs(parseFloat(display.innerText.replace(/,/g, '')));
+            display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toLocaleString();
         } else {
-            display.innerText = Math.abs(parseFloat(display.innerText));
+            display.innerText = Math.abs(parseFloat(display.innerText.replace(/,/g, '')));
+            display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toLocaleString();
         }
     }
 }
