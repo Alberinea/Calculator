@@ -83,7 +83,7 @@ function operate() {
         }
         if (parseFloat(display.innerText) % 1 != 0) display.innerText = parseFloat(display.innerText).toFixed(5);
         if (display.innerText.length > 17)
-            display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toExponential();
+            display.innerText = parseFloat(display.innerText.replace(/,/g, '')).toExponential(5);
         if (display.innerText.length > 13 && display.innerText.length < 16) display.style.cssText = 'font-size: 1.5rem';
         if (display.innerText.length > 17) display.style.cssText = 'font-size: 1.3rem';
     }
